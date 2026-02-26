@@ -46,7 +46,7 @@ try {
 
   // --- Scroll reveal animation ---
   const revealElements = document.querySelectorAll(
-    '.section-title, .section-subtitle, .about-portrait, .about-editorial-header, .about-pullquote, .about-meta, .about-stat-card, .about-fact-col, .featured-ep, .fan-favorites, .video-card, .contact-grid, .music-platforms, .mailing-list-inner, .catalog-filters, .catalog-tracks, .playlists-grid'
+    '.section-title, .section-subtitle, .about-portrait, .about-editorial-header, .about-pullquote, .about-meta, .about-stat-card, .about-fact-col, .featured-ep, .fan-favorites, .video-card, .tour-layout, .contact-grid, .music-platforms, .mailing-list-inner, .catalog-filters, .catalog-tracks, .playlists-grid'
   );
 
   revealElements.forEach(el => el.classList.add('reveal'));

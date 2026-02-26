@@ -936,6 +936,169 @@ img {
   letter-spacing: 0.5px;
 }
 
+/* --- Tour Section --- */
+.tour {
+  background: var(--bg);
+  padding: 5rem 0;
+}
+
+.tour-layout {
+  display: grid;
+  grid-template-columns: 0.4fr 1fr;
+  gap: 0;
+  max-width: 1000px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+
+.tour-photo {
+  position: relative;
+  overflow: hidden;
+}
+
+.tour-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.tour-dates {
+  background: #0a0806;
+  padding: 3rem 3rem 2rem;
+}
+
+.tour-heading {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text);
+  letter-spacing: -1px;
+  margin-bottom: 2rem;
+}
+
+.tour-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.tour-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.tour-row:last-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tour-row:hover {
+  background: rgba(212, 163, 115, 0.04);
+}
+
+.tour-row-date {
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.tour-month {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.tour-row-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.tour-fest {
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.tour-venue {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text);
+  letter-spacing: 0.5px;
+  line-height: 1.3;
+}
+
+.tour-city {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.tour-tickets {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  flex-shrink: 0;
+  transition: color var(--transition);
+}
+
+.tour-row:hover .tour-tickets {
+  color: var(--accent-hover);
+}
+
+.tour-more {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 1.75rem;
+  transition: color var(--transition);
+}
+
+.tour-more:hover {
+  color: var(--accent);
+}
+
+.tour-hbtl {
+  margin-top: 2.5rem;
+  opacity: 0.25;
+  transition: opacity 0.3s ease;
+}
+
+.tour-hbtl:hover {
+  opacity: 0.5;
+}
+
+.tour-hbtl-logo {
+  height: 50px;
+  width: auto;
+  filter: brightness(0) invert(0.85);
+}
+
 /* --- Contact Section --- */
 .contact {
   background: var(--bg);
@@ -1254,6 +1417,37 @@ img {
 
   .hero-title {
     letter-spacing: -1px;
+  }
+
+  /* Tour responsive */
+  .tour-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .tour-photo {
+    max-height: 300px;
+  }
+
+  .tour-dates {
+    padding: 2rem 1.5rem 1.5rem;
+  }
+
+  .tour-heading {
+    font-size: 2.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .tour-row {
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+
+  .tour-row-date {
+    min-width: 80px;
+  }
+
+  .tour-venue {
+    font-size: 0.9rem;
   }
 }
 
