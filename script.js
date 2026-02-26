@@ -3,11 +3,16 @@
 // (Catalog loading is handled inline in index.html)
 // ============================================
 
-// --- Supabase Client ---
+// --- Supabase Client (safe init — won't crash UI if CDN fails) ---
 const SUPABASE_URL = 'https://voxnxjpwzqlggsznsrdj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZveG54anB3enFsZ2dzem5zcmRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNjQ1MDAsImV4cCI6MjA4NzY0MDUwMH0.4Ly0i0tPNw8y6GlLqeVhB-T-E8xfS164dSUEJtxUFb0';
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let supabase;
+try {
+  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+} catch (e) {
+  console.warn('Supabase failed to init:', e);
+}
 
 // --- Main site scripts ---
 (function() {
@@ -41,7 +46,7 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   // --- Scroll reveal animation ---
   const revealElements = document.querySelectorAll(
-    '.section-title, .section-subtitle, .about-grid, .featured-ep, .fan-favorites, .video-card, .contact-grid, .music-platforms, .mailing-list-inner, .catalog-filters, .catalog-tracks, .playlists-grid'
+    '.section-title, .section-subtitle, .about-portrait, .about-editorial-header, .about-pullquote, .about-meta, .about-stat-card, .about-fact-col, .featured-ep, .fan-favorites, .video-card, .contact-grid, .music-platforms, .mailing-list-inner, .catalog-filters, .catalog-tracks, .playlists-grid'
   );
 
   revealElements.forEach(el => el.classList.add('reveal'));
