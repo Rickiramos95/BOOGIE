@@ -271,4 +271,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // =========================
   loadActiveLobby();
   loadOnlineGamers();
+
+  // Safety net: force hero visible if CSS animations don't fire
+  setTimeout(() => {
+    document.querySelectorAll('.gm-hero-logo, .gm-hero-title, .gm-hero-sub, .gm-hero-ctas, .gm-hero-scroll').forEach(el => {
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    });
+  }, 1500);
 });
