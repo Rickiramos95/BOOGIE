@@ -211,6 +211,183 @@ document.addEventListener('DOMContentLoaded', () => {
     `).join('');
   }
 
+  // =========================
+  // LEADERBOARD
+  // =========================
+  const gmLbBody = document.getElementById('gm-lb-body');
+  const gmLbFilters = document.querySelectorAll('.gm-lb-filter');
+  let currentGameFilter = 'all';
+
+  async function loadLeaderboard(gameFilter) {
+    if (!supabase) return;
+    try {
+      let query = supabase
+        .from('leaderboard')
+        .select('*')
+        .order('rank_position', { ascending: true });
+
+      if (gameFilter && gameFilter !== 'all') {
+        query = query.eq('game', gameFilter);
+      }
+
+      const { data: leaders, error } = await query.limit(10);
+
+      if (error || !leaders || !leaders.length) {
+        gmLbBody.innerHTML = '<tr><td colspan="7" class="gm-lb-loading">No rankings yet. Join the squad to compete!</td></tr>';
+        return;
+      }
+
+      gmLbBody.innerHTML = leaders.map((p, i) => {
+        const rank = i + 1;
+        let rankClass = '';
+        if (rank === 1) rankClass = 'gm-lb-rank--gold';
+        else if (rank === 2) rankClass = 'gm-lb-rank--silver';
+        else if (rank === 3) rankClass = 'gm-lb-rank--bronze';
+
+        return `
+          <tr>
+            <td><span class="gm-lb-rank ${rankClass}">#${rank}</span></td>
+            <td>
+              <div class="gm-lb-player">
+                <span class="gm-lb-avatar">${p.avatar_emoji || '🎮'}</span>
+                <span class="gm-lb-gamertag">${p.gamertag}</span>
+              </div>
+            </td>
+            <td><span class="gm-lb-platform">${p.platform || '--'}</span></td>
+            <td><span class="gm-lb-game">${p.game || '--'}</span></td>
+            <td><span class="gm-lb-wins">${p.wins}</span></td>
+            <td><span class="gm-lb-kd">${p.kd_ratio ? p.kd_ratio.toFixed(2) : '--'}</span></td>
+            <td><span class="gm-lb-score">${p.score ? p.score.toLocaleString() : '--'}</span></td>
+          </tr>
+        `;
+      }).join('');
+    } catch (err) {
+      console.warn('Leaderboard load error:', err);
+      gmLbBody.innerHTML = '<tr><td colspan="7" class="gm-lb-loading">Failed to load rankings.</td></tr>';
+    }
+  }
+
+  // Leaderboard filter buttons
+  gmLbFilters.forEach(btn => {
+    btn.addEventListener('click', () => {
+      gmLbFilters.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentGameFilter = btn.dataset.game;
+      loadLeaderboard(currentGameFilter);
+    });
+  });
+
+  // =========================
+  // UPCOMING SESSIONS
+  // =========================
+  const gmSessionsGrid = document.getElementById('gm-sessions-grid');
+  const gmSessionsEmpty = document.getElementById('gm-sessions-empty');
+
+  async function loadUpcomingSessions() {
+    if (!supabase) return;
+    try {
+      const { data: sessions, error } = await supabase
+        .from('gaming_sessions')
+        .select('*')
+        .in('status', ['scheduled', 'live'])
+        .order('scheduled_at', { ascending: true })
+        .limit(6);
+
+      if (error || !sessions || !sessions.length) {
+        gmSessionsGrid.innerHTML = '';
+        gmSessionsGrid.appendChild(gmSessionsEmpty);
+        gmSessionsEmpty.style.display = '';
+        return;
+      }
+
+      gmSessionsEmpty.style.display = 'none';
+      gmSessionsGrid.innerHTML = sessions.map(s => {
+        const date = new Date(s.scheduled_at);
+        const dateStr = date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        const timeStr = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        const statusClass = s.status === 'live' ? 'gm-session-status--live' : 'gm-session-status--scheduled';
+        const statusText = s.status === 'live' ? 'LIVE' : 'SCHEDULED';
+
+        return `
+          <div class="gm-session-card">
+            <div class="gm-session-header">
+              <span class="gm-session-game">${s.game}</span>
+              <span class="gm-session-status ${statusClass}">${statusText}</span>
+            </div>
+            <h3 class="gm-session-title">${s.title}</h3>
+            ${s.description ? `<p class="gm-session-desc">${s.description}</p>` : ''}
+            <div class="gm-session-meta">
+              <div class="gm-session-meta-item">
+                <span class="gm-session-meta-label">Date</span>
+                <span class="gm-session-meta-value">${dateStr}</span>
+              </div>
+              <div class="gm-session-meta-item">
+                <span class="gm-session-meta-label">Time</span>
+                <span class="gm-session-meta-value">${timeStr}</span>
+              </div>
+              <div class="gm-session-meta-item">
+                <span class="gm-session-meta-label">Host</span>
+                <span class="gm-session-meta-value">${s.host || 'Boogie'}</span>
+              </div>
+              ${s.max_players ? `
+              <div class="gm-session-meta-item">
+                <span class="gm-session-meta-label">Slots</span>
+                <span class="gm-session-meta-value">${s.max_players} max</span>
+              </div>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    } catch (err) {
+      console.warn('Sessions load error:', err);
+    }
+  }
+
+  // =========================
+  // STATS BAR
+  // =========================
+  async function loadStats() {
+    if (!supabase) return;
+    try {
+      // Squad count
+      const { count: squadCount } = await supabase
+        .from('gamers')
+        .select('*', { count: 'exact', head: true });
+
+      // Online count
+      const thirtyMinAgo = new Date(Date.now() - 30 * 60 * 1000).toISOString();
+      const { count: onlineCount } = await supabase
+        .from('gamers')
+        .select('*', { count: 'exact', head: true })
+        .eq('is_online', true)
+        .gte('last_seen', thirtyMinAgo);
+
+      // Active lobbies
+      const { count: lobbyCount } = await supabase
+        .from('lobby')
+        .select('*', { count: 'exact', head: true })
+        .eq('is_active', true);
+
+      // Upcoming sessions
+      const { count: sessionCount } = await supabase
+        .from('gaming_sessions')
+        .select('*', { count: 'exact', head: true })
+        .in('status', ['scheduled', 'live']);
+
+      const statSquad = document.getElementById('gm-stat-squad');
+      const statOnline = document.getElementById('gm-stat-online');
+      const statLobbies = document.getElementById('gm-stat-lobbies');
+      const statSessions = document.getElementById('gm-stat-sessions');
+
+      if (statSquad) statSquad.textContent = squadCount || 0;
+      if (statOnline) statOnline.textContent = onlineCount || 0;
+      if (statLobbies) statLobbies.textContent = lobbyCount || 0;
+      if (statSessions) statSessions.textContent = sessionCount || 0;
+    } catch (err) {
+      console.warn('Stats load error:', err);
+    }
+  }
+
   // --- Register gamer / Join squad ---
   gmForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -276,4 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // =========================
   loadActiveLobby();
   loadOnlineGamers();
+  loadLeaderboard('all');
+  loadUpcomingSessions();
+  loadStats();
 });

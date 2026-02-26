@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Run The Lobby | A Boogie Wit Da Hoodie</title>
-  <link rel="stylesheet" href="gaming.css?v=3">
+  <link rel="stylesheet" href="gaming.css?v=4">
   <link rel="stylesheet" href="gate.css">
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
@@ -19,9 +19,10 @@
       </a>
       <ul class="gm-nav-links" id="gm-nav-links">
         <li><a href="#lobby">Lobby</a></li>
-        <li><a href="#games">Games</a></li>
+        <li><a href="#leaderboard">Leaderboard</a></li>
+        <li><a href="#schedule">Schedule</a></li>
         <li><a href="#squad">Squad</a></li>
-        <li><a href="#teammates">Find Players</a></li>
+        <li><a href="#teammates">Players</a></li>
         <li class="gm-nav-mobile-back"><a href="index.html">Back to Site</a></li>
       </ul>
       <a href="index.html" class="gm-nav-back">Main Site</a>
@@ -76,6 +77,33 @@
     </div>
   </section>
 
+  <!-- Stats Bar -->
+  <section class="gm-stats-bar">
+    <div class="container">
+      <div class="gm-stats-row gm-reveal">
+        <div class="gm-stat-block">
+          <span class="gm-stat-num" id="gm-stat-squad">--</span>
+          <span class="gm-stat-label">Squad Members</span>
+        </div>
+        <div class="gm-stat-divider"></div>
+        <div class="gm-stat-block">
+          <span class="gm-stat-num" id="gm-stat-online">--</span>
+          <span class="gm-stat-label">Online Now</span>
+        </div>
+        <div class="gm-stat-divider"></div>
+        <div class="gm-stat-block">
+          <span class="gm-stat-num" id="gm-stat-lobbies">--</span>
+          <span class="gm-stat-label">Active Lobbies</span>
+        </div>
+        <div class="gm-stat-divider"></div>
+        <div class="gm-stat-block">
+          <span class="gm-stat-num" id="gm-stat-sessions">--</span>
+          <span class="gm-stat-label">Upcoming Sessions</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Live Lobby -->
   <section class="gm-section gm-lobby-section" id="lobby">
     <div class="container">
@@ -114,6 +142,53 @@
         <div class="gm-no-badge">Offline</div>
         <h3 class="gm-no-title">No Active Lobby</h3>
         <p class="gm-no-desc">No lobby running right now. Join the squad below to get notified when Boogie goes live.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leaderboard -->
+  <section class="gm-section gm-leaderboard-section" id="leaderboard">
+    <div class="container">
+      <p class="gm-section-label gm-reveal">Rankings</p>
+      <h2 class="gm-section-title gm-reveal">Leaderboard</h2>
+      <p class="gm-section-sub gm-reveal">Top players in the squad</p>
+
+      <div class="gm-lb-filters gm-reveal">
+        <button class="gm-lb-filter active" data-game="all">All Games</button>
+        <button class="gm-lb-filter" data-game="Call of Duty">COD</button>
+        <button class="gm-lb-filter" data-game="NBA 2K">2K</button>
+      </div>
+
+      <div class="gm-lb-table-wrap gm-reveal">
+        <table class="gm-lb-table" id="gm-lb-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Player</th>
+              <th>Platform</th>
+              <th>Game</th>
+              <th>Wins</th>
+              <th>K/D</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody id="gm-lb-body">
+            <tr><td colspan="7" class="gm-lb-loading">Loading rankings...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Upcoming Sessions -->
+  <section class="gm-section gm-schedule-section" id="schedule">
+    <div class="container">
+      <p class="gm-section-label gm-reveal">Coming Up</p>
+      <h2 class="gm-section-title gm-reveal">Upcoming Sessions</h2>
+      <p class="gm-section-sub gm-reveal">Scheduled lobbies &mdash; mark your calendar</p>
+
+      <div class="gm-sessions-grid gm-reveal" id="gm-sessions-grid">
+        <p class="gm-sessions-empty" id="gm-sessions-empty">No sessions scheduled right now. Check back soon.</p>
       </div>
     </div>
   </section>
@@ -200,6 +275,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="gate.js"></script>
-  <script src="gaming.js?v=2"></script>
+  <script src="gaming.js?v=3"></script>
 </body>
 </html>
