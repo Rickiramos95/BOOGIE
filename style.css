@@ -1182,67 +1182,112 @@ a.video-card {
 }
 
 /* --- Track Catalog --- */
+/* --- Track Catalog (Spotify-style) --- */
 .catalog {
   background: var(--bg-light);
 }
 
 .catalog-filters {
   display: flex;
-  justify-content: center;
   gap: 0.5rem;
   flex-wrap: wrap;
   margin-bottom: 2rem;
 }
 
-.catalog-filter {
-  font-family: var(--font-display);
+.catalog-chip {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.07);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.catalog-chip:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.catalog-chip.active {
+  color: var(--bg);
+  background: var(--accent);
+}
+
+.catalog-empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 3rem 0;
+  font-size: 0.95rem;
+}
+
+/* Table header */
+.catalog-header {
+  display: grid;
+  grid-template-columns: 40px minmax(180px, 2fr) minmax(100px, 1fr) 50px 64px;
+  gap: 1rem;
+  align-items: center;
+  padding: 0 1rem 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 0.25rem;
+}
+
+.catalog-header span {
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--text-muted);
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.4rem 1rem;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: all var(--transition);
 }
 
-.catalog-filter:hover,
-.catalog-filter.active {
-  color: var(--accent);
-  border-color: var(--accent);
-  background: rgba(212, 163, 115, 0.1);
-}
+.cat-col-num { text-align: center; }
+.cat-col-dur { display: flex; justify-content: flex-end; }
+.cat-col-dur svg { color: var(--text-muted); }
 
-.catalog-loading {
-  text-align: center;
-  color: var(--text-muted);
-  padding: 2rem 0;
-}
-
+/* Track row */
 .catalog-track {
   display: grid;
-  grid-template-columns: 48px 1fr auto auto auto;
+  grid-template-columns: 40px minmax(180px, 2fr) minmax(100px, 1fr) 50px 64px;
   gap: 1rem;
   align-items: center;
-  padding: 0.75rem 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-  transition: background var(--transition);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background 0.15s ease;
 }
 
 .catalog-track:hover {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.06);
 }
 
-.catalog-track:last-child {
-  border-bottom: none;
+/* Track number / play toggle */
+.catalog-track-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+.ct-play { display: none; }
+.catalog-track:hover .ct-num { display: none; }
+.catalog-track:hover .ct-play { display: flex; color: var(--text); }
+
+/* Title column: art + info */
+.catalog-track-main {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
 }
 
 .catalog-track-art {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border-radius: 4px;
   background: var(--bg-card);
   display: flex;
@@ -1259,12 +1304,12 @@ a.video-card {
 }
 
 .catalog-track-art svg {
-  width: 20px;
-  height: 20px;
   color: rgba(255, 255, 255, 0.15);
 }
 
 .catalog-track-info {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
 }
 
@@ -1275,60 +1320,65 @@ a.video-card {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: block;
+  transition: color 0.15s ease;
 }
 
-.catalog-track-meta {
+.catalog-track:hover .catalog-track-title {
+  color: var(--accent);
+}
+
+.catalog-track-artist {
   font-size: 0.8rem;
   color: var(--text-muted);
-  margin-top: 0.15rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 }
 
+/* Album column */
+.catalog-track-album {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.catalog-track-album:hover {
+  color: var(--text);
+  text-decoration: underline;
+}
+
+/* Duration */
 .catalog-track-duration {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--text-muted);
   font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+  text-align: right;
 }
 
+/* Stream link icons */
 .catalog-track-links {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .catalog-link {
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
   color: var(--text-muted);
-  transition: color var(--transition);
-}
-
-.catalog-link:hover {
-  color: var(--accent);
-}
-
-.catalog-track-add {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: transparent;
-  color: var(--text-muted);
-  font-size: 1.1rem;
-  cursor: pointer;
+  opacity: 0.4;
+  transition: all 0.15s ease;
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: all var(--transition);
-  flex-shrink: 0;
 }
 
-.catalog-track-add:hover {
-  color: var(--accent);
-  border-color: var(--accent);
-  background: rgba(212, 163, 115, 0.1);
-}
+.catalog-track:hover .catalog-link { opacity: 0.7; }
+.catalog-link:hover { opacity: 1 !important; }
+.catalog-link-spotify:hover { color: #1DB954; }
+.catalog-link-apple:hover { color: #fc3c44; }
 
 /* --- Add to Playlist Dropdown --- */
 .add-to-playlist-dropdown {
@@ -1628,13 +1678,10 @@ a.video-card {
     display: none;
   }
 
-  .catalog-track {
-    grid-template-columns: 48px 1fr auto auto;
-  }
-
-  .catalog-track-links {
-    display: none;
-  }
+  .catalog-header { grid-template-columns: 32px 1fr 50px 64px; }
+  .catalog-track { grid-template-columns: 32px 1fr 50px 64px; }
+  .cat-col-album,
+  .catalog-track-album { display: none; }
 
   .playlists-header {
     flex-direction: column;
@@ -1655,19 +1702,15 @@ a.video-card {
 }
 
 @media (max-width: 480px) {
-  .catalog-track {
-    grid-template-columns: 40px 1fr auto;
-    gap: 0.75rem;
-  }
-
-  .catalog-track-art {
-    width: 40px;
-    height: 40px;
-  }
-
-  .catalog-track-duration {
-    display: none;
-  }
+  .catalog-header { grid-template-columns: 28px 1fr 44px; gap: 0.5rem; padding: 0 0.5rem 0.5rem; }
+  .catalog-track { grid-template-columns: 28px 1fr 44px; gap: 0.5rem; padding: 0.4rem 0.5rem; }
+  .cat-col-dur,
+  .catalog-track-duration,
+  .cat-col-links,
+  .catalog-track-links { display: none; }
+  .catalog-track-art { width: 36px; height: 36px; }
+  .catalog-track-title { font-size: 0.85rem; }
+  .catalog-track-artist { font-size: 0.7rem; }
 
   .playlists-grid {
     grid-template-columns: 1fr;
