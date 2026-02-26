@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Run The Lobby | A Boogie Wit Da Hoodie</title>
+  <link rel="stylesheet" href="gaming.css">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="gm-nav">
+    <div class="gm-nav-inner">
+      <a href="gaming.html" class="gm-nav-brand">
+        <img src="logo.png" alt="Boogie" class="gm-nav-logo" onerror="this.style.display='none'">
+        <span class="gm-nav-title">Boogie Gaming</span>
+      </a>
+      <ul class="gm-nav-links" id="gm-nav-links">
+        <li><a href="#lobby">Lobby</a></li>
+        <li><a href="#games">Games</a></li>
+        <li><a href="#squad">Squad</a></li>
+        <li><a href="#teammates">Find Players</a></li>
+        <li class="gm-nav-mobile-back"><a href="index.html">Back to Site</a></li>
+      </ul>
+      <a href="index.html" class="gm-nav-back">Main Site</a>
+      <div class="gm-nav-toggle" id="gm-nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="gm-hero">
+    <div class="gm-hero-overlay"></div>
+    <div class="gm-hero-content">
+      <img src="logo.png" alt="A Boogie Wit Da Hoodie" class="gm-hero-logo" onerror="this.style.display='none'">
+      <h1 class="gm-hero-title">Run The<br>Lobby</h1>
+      <p class="gm-hero-sub">Boogie runs COD & 2K. Join the squad.</p>
+      <div class="gm-hero-ctas">
+        <a href="#squad" class="btn btn-primary">Join Squad</a>
+        <a href="https://discord.com/channels/1171555766361129031/1171555766864457829" target="_blank" class="btn btn-outline">Join Discord</a>
+      </div>
+    </div>
+    <div class="gm-hero-scroll">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+    </div>
+  </section>
+
+  <!-- Game Tiles -->
+  <section class="gm-section" id="games">
+    <div class="container">
+      <p class="gm-section-label gm-reveal">Select Your Game</p>
+      <h2 class="gm-section-title gm-reveal">Pick Your Arena</h2>
+      <div class="gm-tiles-grid gm-reveal">
+        <div class="gm-tile">
+          <div class="gm-tile-bg gm-tile-bg--cod"></div>
+          <div class="gm-tile-overlay"></div>
+          <div class="gm-tile-content">
+            <p class="gm-tile-game">Activision</p>
+            <h3 class="gm-tile-name">Call of<br>Duty</h3>
+          </div>
+        </div>
+        <div class="gm-tile">
+          <div class="gm-tile-bg gm-tile-bg--2k"></div>
+          <div class="gm-tile-overlay"></div>
+          <div class="gm-tile-content">
+            <p class="gm-tile-game">2K Sports</p>
+            <h3 class="gm-tile-name">NBA<br>2K</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Lobby -->
+  <section class="gm-section gm-lobby-section" id="lobby">
+    <div class="container">
+      <p class="gm-section-label gm-reveal">Live Now</p>
+      <h2 class="gm-section-title gm-reveal">The Lobby</h2>
+
+      <!-- Active Lobby -->
+      <div class="gm-lobby gm-reveal" id="gm-lobby" hidden>
+        <div class="gm-live-badge">
+          <span class="gm-live-dot"></span>
+          Live Now
+        </div>
+        <h3 class="gm-lobby-title">Boogie's Lobby</h3>
+        <p class="gm-lobby-game" id="gm-lobby-game"></p>
+        <div class="gm-lobby-code" id="gm-lobby-code"></div>
+
+        <div class="gm-queue-section">
+          <h4 class="gm-queue-title">Up Next</h4>
+          <ul class="gm-queue-list" id="gm-queue-list"></ul>
+          <p class="gm-queue-empty" id="gm-queue-empty" hidden>No one in line yet. Be first!</p>
+          <form class="gm-queue-form" id="gm-queue-form">
+            <div class="gm-queue-row">
+              <input type="text" name="gamer_name" placeholder="Your Gamertag" required>
+              <input type="text" name="psn_id" placeholder="PSN ID (optional)">
+              <button type="submit" class="btn btn-primary">Join Queue</button>
+            </div>
+            <div class="gm-queue-success" id="gm-queue-success" hidden>
+              <p>You're in line!</p>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- No Active Lobby -->
+      <div class="gm-no-lobby gm-reveal" id="gm-no-lobby">
+        <div class="gm-no-badge">Offline</div>
+        <h3 class="gm-no-title">No Active Lobby</h3>
+        <p class="gm-no-desc">No lobby running right now. Join the squad below to get notified when Boogie goes live.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Join The Squad -->
+  <section class="gm-section gm-squad-section" id="squad">
+    <div class="container">
+      <div class="gm-register-card gm-reveal">
+        <h3 class="gm-register-title">Join The Squad</h3>
+        <p class="gm-register-sub">Drop your info to find teammates and get lobby invites</p>
+        <form class="gm-form" id="gm-form">
+          <div class="gm-form-row">
+            <div class="form-group">
+              <input type="text" name="display_name" placeholder="Gamertag / Display Name" required>
+            </div>
+            <div class="form-group">
+              <input type="text" name="psn_id" placeholder="PSN ID">
+            </div>
+          </div>
+          <div class="gm-form-row">
+            <div class="form-group">
+              <input type="text" name="xbox_id" placeholder="Xbox Gamertag">
+            </div>
+            <div class="form-group">
+              <input type="email" name="email" placeholder="Email (for notifications)">
+            </div>
+          </div>
+          <div class="gm-form-row">
+            <div class="form-group">
+              <select name="favorite_game">
+                <option value="" disabled selected>What do you play?</option>
+                <option value="Call of Duty">Call of Duty</option>
+                <option value="NBA 2K">NBA 2K</option>
+                <option value="Both">Both</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-accent btn-full" id="gm-submit">Join Squad</button>
+            </div>
+          </div>
+          <div class="gm-success" id="gm-success" hidden>
+            <p>You're in the squad! Drop in anytime.</p>
+          </div>
+          <div class="gm-error" id="gm-error" hidden>
+            <p id="gm-error-msg">Something went wrong. Try again.</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Find Teammates -->
+  <section class="gm-section gm-teammates-section" id="teammates">
+    <div class="container">
+      <p class="gm-section-label gm-reveal">Online Now</p>
+      <h2 class="gm-section-title gm-reveal">Find Teammates</h2>
+      <p class="gm-section-sub gm-reveal">See who's online and ready to run it</p>
+      <div class="gm-online-list gm-reveal" id="gm-online-list">
+        <p class="gm-online-empty" id="gm-online-empty">No one online right now. Be the first!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Discord CTA -->
+  <section class="gm-section gm-discord-section">
+    <div class="container">
+      <div class="gm-reveal">
+        <h2 class="gm-discord-heading">Join the Community</h2>
+        <p class="gm-discord-sub">Link up with Boogie and the squad on Discord</p>
+        <a href="https://discord.com/channels/1171555766361129031/1171555766864457829" target="_blank" class="gm-discord-btn">
+          <svg class="gm-discord-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+          Join A Boogie's Discord
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="gm-footer">
+    <p class="gm-footer-logo">A BOOGIE WIT DA HOODIE</p>
+    <a href="index.html" class="gm-footer-link">&larr; Back to Main Site</a>
+    <p class="gm-footer-copy">&copy; 2026 A Boogie Wit Da Hoodie. Fan site.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="gaming.js"></script>
+</body>
+</html>
