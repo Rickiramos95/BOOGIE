@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>A Boogie Wit Da Hoodie</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="gate.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -231,47 +232,6 @@
     </div>
   </section>
 
-  <!-- Mailing List Section -->
-  <section class="mailing-list" id="mailing-list">
-    <div class="ml-bg-glow"></div>
-    <div class="container">
-      <div class="mailing-list-inner">
-        <div class="ml-badge">Exclusive Access</div>
-        <h2 class="ml-title">Join The Hoodie Gang</h2>
-        <p class="mailing-list-desc">
-          New music. Tour dates. Merch drops. Exclusive content you won't
-          find anywhere else. Be the first to know&mdash;get plugged in.
-        </p>
-        <form class="mailing-list-form" id="mailing-list-form">
-          <div class="ml-form-row">
-            <div class="form-group">
-              <input type="text" name="name" placeholder="Your Name" required>
-            </div>
-            <div class="form-group">
-              <input type="email" name="email" placeholder="Email Address" required>
-            </div>
-          </div>
-          <div class="ml-form-row">
-            <div class="form-group">
-              <input type="tel" name="phone" placeholder="Phone Number">
-            </div>
-            <div class="form-group">
-              <input type="text" name="zip_code" placeholder="Zip Code" maxlength="10">
-            </div>
-          </div>
-          <button type="submit" class="btn btn-accent btn-full" id="ml-submit">Join Now</button>
-          <p class="ml-disclaimer">We respect your privacy. Unsubscribe anytime.</p>
-          <div class="ml-success" id="ml-success" hidden>
-            <p>You're in! Welcome to the family.</p>
-          </div>
-          <div class="ml-error" id="ml-error" hidden>
-            <p id="ml-error-msg">Something went wrong. Try again.</p>
-          </div>
-        </form>
-      </div>
-    </div>
-  </section>
-
   <!-- Contact Section -->
   <section class="section contact" id="contact">
     <div class="container">
@@ -370,6 +330,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="gate.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
