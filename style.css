@@ -30,6 +30,7 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
+  scroll-snap-type: y proximity;
 }
 
 body {
@@ -171,6 +172,7 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
+  scroll-snap-align: start;
   text-align: center;
   background: var(--bg) url('https://beatroutemedia.com/wp-content/uploads/2022/12/A-Boogie-wit-da-Hoodie-In-Article-2.png') center top / cover no-repeat;
   overflow: hidden;
@@ -340,6 +342,7 @@ img {
 /* --- Sections --- */
 .section {
   padding: 6rem 0;
+  scroll-snap-align: start;
 }
 
 .section-title {
@@ -633,6 +636,12 @@ img {
   white-space: nowrap;
 }
 
+.fact-tag-album {
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.04);
+  font-style: italic;
+}
+
 .fact-list-plain li {
   justify-content: flex-start;
 }
@@ -663,20 +672,25 @@ img {
   opacity: 0.6;
 }
 
-/* Staggered Scroll Reveal */
+/* Staggered Scroll Reveal — Pop-In */
 .about-spread .reveal,
 .about-stats-row .reveal,
 .about-facts-grid .reveal {
   opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateY(50px) scale(0.96);
+  filter: blur(4px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .about-spread .reveal.visible,
 .about-stats-row .reveal.visible,
 .about-facts-grid .reveal.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+  filter: blur(0);
 }
 
 /* Stagger the stat cards */
@@ -1247,20 +1261,34 @@ img {
   50% { opacity: 1; }
 }
 
-/* Scroll reveal class */
+/* Scroll reveal class — dramatic pop-in */
 .reveal {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: translateY(60px) scale(0.97);
+  filter: blur(4px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+  filter: blur(0);
 }
 
 /* --- Responsive --- */
 @media (max-width: 768px) {
+  html {
+    scroll-snap-type: none;
+  }
+
+  .reveal {
+    transform: translateY(40px);
+    filter: none;
+  }
+
   .nav-toggle {
     display: flex;
   }

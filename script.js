@@ -55,7 +55,7 @@ try {
     const windowHeight = window.innerHeight;
     document.querySelectorAll('.reveal').forEach(el => {
       const elementTop = el.getBoundingClientRect().top;
-      if (elementTop < windowHeight - 80) {
+      if (elementTop < windowHeight - 40) {
         el.classList.add('visible');
       }
     });
