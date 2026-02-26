@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Load active lobby ---
   async function loadActiveLobby() {
     const { data: lobby } = await supabase
-      .from('lobby')
+      .from('gaming_lobbies')
       .select('*')
       .eq('is_active', true)
       .order('created_at', { ascending: false })
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Load queue for active lobby ---
   async function loadQueue(lobbyId) {
     const { data: queue } = await supabase
-      .from('lobby_queue')
+      .from('gaming_queue')
       .select('*')
       .eq('lobby_id', lobbyId)
       .eq('status', 'waiting')
@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const psnId = formData.get('psn_id')?.trim() || null;
 
     const { data: existing } = await supabase
-      .from('lobby_queue')
+      .from('gaming_queue')
       .select('position')
       .eq('lobby_id', lobbyId)
       .order('position', { ascending: false })
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextPos = (existing && existing.length > 0) ? existing[0].position + 1 : 1;
 
     const { error } = await supabase
-      .from('lobby_queue')
+      .from('gaming_queue')
       .insert([{ lobby_id: lobbyId, gamer_name: gamerName, psn_id: psnId, position: nextPos }]);
 
     if (error) {
@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const thirtyMinAgo = new Date(Date.now() - 30 * 60 * 1000).toISOString();
 
     const { data: gamers } = await supabase
-      .from('gamers')
+      .from('gaming_squad')
       .select('display_name, psn_id, xbox_id, current_game, last_seen')
       .eq('is_online', true)
       .gte('last_seen', thirtyMinAgo)
@@ -351,20 +351,20 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       // Squad count
       const { count: squadCount } = await supabase
-        .from('gamers')
+        .from('gaming_squad')
         .select('*', { count: 'exact', head: true });
 
       // Online count
       const thirtyMinAgo = new Date(Date.now() - 30 * 60 * 1000).toISOString();
       const { count: onlineCount } = await supabase
-        .from('gamers')
+        .from('gaming_squad')
         .select('*', { count: 'exact', head: true })
         .eq('is_online', true)
         .gte('last_seen', thirtyMinAgo);
 
       // Active lobbies
       const { count: lobbyCount } = await supabase
-        .from('lobby')
+        .from('gaming_lobbies')
         .select('*', { count: 'exact', head: true })
         .eq('is_active', true);
 
@@ -411,7 +411,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     try {
-      const { error } = await supabase.from('gamers').insert([gamer]);
+      const { error } = await supabase.from('gaming_squad').insert([gamer]);
 
       if (error) {
         if (error.code === '23505') {
