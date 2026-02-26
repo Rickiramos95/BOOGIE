@@ -953,14 +953,14 @@ img {
 /* --- Tour Section --- */
 .tour {
   background: var(--bg);
-  padding: 5rem 0;
+  padding: 3rem 0;
 }
 
 .tour-layout {
   display: grid;
-  grid-template-columns: 0.4fr 1fr;
+  grid-template-columns: 0.3fr 1fr;
   gap: 0;
-  max-width: 1000px;
+  max-width: 850px;
   margin: 0 auto;
   overflow: hidden;
   border-radius: var(--radius);
@@ -969,6 +969,7 @@ img {
 .tour-photo {
   position: relative;
   overflow: hidden;
+  max-height: 380px;
 }
 
 .tour-photo-img {
@@ -980,17 +981,17 @@ img {
 
 .tour-dates {
   background: #0a0806;
-  padding: 3rem 3rem 2rem;
+  padding: 2rem 2.5rem 1.5rem;
 }
 
 .tour-heading {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 700;
   text-transform: uppercase;
   color: var(--text);
   letter-spacing: -1px;
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
 }
 
 .tour-list {
@@ -1001,8 +1002,8 @@ img {
 .tour-row {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  padding: 1.25rem 0;
+  gap: 1.25rem;
+  padding: 0.85rem 0;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   text-decoration: none;
   transition: background 0.2s ease;
@@ -1048,7 +1049,7 @@ img {
 
 .tour-venue {
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   text-transform: uppercase;
   color: var(--text);
@@ -1084,12 +1085,12 @@ img {
   display: inline-flex;
   align-items: center;
   font-family: var(--font-display);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin-top: 1.75rem;
+  margin-top: 1.25rem;
   transition: color var(--transition);
 }
 
@@ -1098,7 +1099,7 @@ img {
 }
 
 .tour-hbtl {
-  margin-top: 2.5rem;
+  margin-top: 1.5rem;
   opacity: 0.25;
   transition: opacity 0.3s ease;
 }
@@ -1108,7 +1109,7 @@ img {
 }
 
 .tour-hbtl-logo {
-  height: 50px;
+  height: 36px;
   width: auto;
   filter: brightness(0) invert(0.85);
 }
