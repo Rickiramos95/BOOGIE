@@ -2,11 +2,16 @@
 // A BOOGIE WIT DA HOODIE — Gaming Page Scripts
 // ============================================
 
-// --- Supabase Client ---
+// --- Supabase Client (safe init) ---
 const SUPABASE_URL = 'https://voxnxjpwzqlggsznsrdj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZveG54anB3enFsZ2dzem5zcmRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNjQ1MDAsImV4cCI6MjA4NzY0MDUwMH0.4Ly0i0tPNw8y6GlLqeVhB-T-E8xfS164dSUEJtxUFb0';
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let supabase;
+try {
+  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+} catch (e) {
+  console.warn('Supabase failed to init:', e);
+}
 
 document.addEventListener('DOMContentLoaded', () => {
 
