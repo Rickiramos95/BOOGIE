@@ -361,41 +361,186 @@ img {
   background: var(--bg-light);
 }
 
-.about-grid {
-  display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  gap: 4rem;
-  align-items: center;
-  margin-top: 3rem;
+/* Hero Image — centered */
+.about-hero {
+  text-align: center;
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
 }
 
-.about-img {
-  width: 100%;
-  aspect-ratio: 3/4;
+.about-hero-img {
+  width: 280px;
+  height: 280px;
   object-fit: cover;
-  border-radius: var(--radius);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  object-position: top;
+  border-radius: 50%;
+  border: 3px solid rgba(212, 163, 115, 0.3);
+  box-shadow: 0 0 60px rgba(212, 163, 115, 0.12);
 }
 
-.about-lead {
-  font-size: 1.3rem;
-  font-weight: 400;
-  line-height: 1.7;
-  margin-bottom: 1rem;
+.about-hero-name {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-top: 1.25rem;
 }
 
-.about-text p {
+.about-hero-real {
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
   color: var(--text-muted);
-  margin-bottom: 1.5rem;
-  line-height: 1.8;
 }
 
+.about-hero-aka {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--text), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Bio Paragraph */
+.about-bio {
+  max-width: 760px;
+  margin: 0 auto 3rem;
+  text-align: center;
+}
+
+.about-bio p {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.85;
+}
+
+.about-bio em {
+  color: var(--accent);
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* Stats Grid */
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 3rem;
+}
+
+.about-stat {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(212, 163, 115, 0.12);
+  border-radius: 12px;
+  transition: border-color 0.3s ease;
+}
+
+.about-stat:hover {
+  border-color: rgba(212, 163, 115, 0.35);
+}
+
+.stat-number {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.1;
+}
+
+.stat-label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-top: 0.4rem;
+}
+
+.stat-desc {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
+/* Quick Facts — 3 columns */
+.about-facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.fact-heading {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(212, 163, 115, 0.15);
+}
+
+.fact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.fact-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  padding: 0.35rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.fact-list li:last-child {
+  border-bottom: none;
+}
+
+.fact-year {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.fact-tag {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(212, 163, 115, 0.1);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.fact-list-plain li {
+  justify-content: flex-start;
+}
+
+/* Details Bar */
 .about-details {
   display: flex;
   gap: 2.5rem;
-  margin-top: 2rem;
+  margin-top: 0;
   padding-top: 2rem;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap;
 }
 
 .about-detail {
@@ -851,13 +996,18 @@ img {
     color: var(--text);
   }
 
-  .about-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+  .about-hero-img {
+    width: 220px;
+    height: 220px;
   }
 
-  .about-img {
-    aspect-ratio: 16/9;
+  .about-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .about-facts {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
   .about-details {
@@ -914,6 +1064,32 @@ img {
 
   .apple-music-embed {
     height: 400px;
+  }
+
+  .about-hero-img {
+    width: 180px;
+    height: 180px;
+  }
+
+  .about-hero-aka {
+    font-size: 1.3rem;
+  }
+
+  .about-bio p {
+    font-size: 0.95rem;
+  }
+
+  .about-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .stat-number {
+    font-size: 1.8rem;
+  }
+
+  .about-stat {
+    padding: 1rem 0.75rem;
   }
 
   .about-details {
