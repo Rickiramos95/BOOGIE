@@ -1,5 +1,6 @@
 // ============================================
 // A BOOGIE WIT DA HOODIE — Landing Page Scripts
+// (Catalog loading is handled inline in index.html)
 // ============================================
 
 // --- Supabase Client ---
@@ -7,83 +8,6 @@ const SUPABASE_URL = 'https://voxnxjpwzqlggsznsrdj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZveG54anB3enFsZ2dzem5zcmRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNjQ1MDAsImV4cCI6MjA4NzY0MDUwMH0.4Ly0i0tPNw8y6GlLqeVhB-T-E8xfS164dSUEJtxUFb0';
 
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-// --- Load track catalog via direct REST API (avoids multiple-client conflicts) ---
-(async function loadCatalog() {
-  try {
-    const catalogEl = document.getElementById('catalog-tracks');
-    const filtersEl = document.getElementById('catalog-filters');
-    if (!catalogEl) return;
-
-    const res = await fetch(
-      SUPABASE_URL + '/rest/v1/tracks?select=*&order=release_year.desc,track_number.asc',
-      { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY } }
-    );
-
-    if (!res.ok) throw new Error('Failed to fetch tracks');
-    const tracks = await res.json();
-
-    if (!tracks || !tracks.length) {
-      catalogEl.innerHTML = '<p class="catalog-empty">No tracks available.</p>';
-      return;
-    }
-
-    window.__allTracks = tracks;
-
-    // Build album filter chips
-    const albums = [...new Set(tracks.map(t => t.album))];
-    let chipHtml = '<button class="catalog-chip active" data-album="all">All</button>';
-    albums.forEach(a => { chipHtml += '<button class="catalog-chip" data-album="' + a + '">' + a + '</button>'; });
-    filtersEl.innerHTML = chipHtml;
-
-    filtersEl.addEventListener('click', (e) => {
-      const btn = e.target.closest('.catalog-chip');
-      if (!btn) return;
-      filtersEl.querySelectorAll('.catalog-chip').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const album = btn.dataset.album;
-      renderCatalogTracks(album === 'all' ? tracks : tracks.filter(t => t.album === album));
-    });
-
-    renderCatalogTracks(tracks);
-  } catch (e) {
-    const el = document.getElementById('catalog-tracks');
-    if (el) el.innerHTML = '<p class="catalog-empty">Failed to load catalog.</p>';
-  }
-})();
-
-function renderCatalogTracks(tracks) {
-  const el = document.getElementById('catalog-tracks');
-  if (!el) return;
-  if (!tracks || !tracks.length) { el.innerHTML = '<p class="catalog-empty">No tracks found.</p>'; return; }
-
-  const clockSvg = '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/><path d="M8 3.25a.75.75 0 0 1 .75.75v3.69l2.28 2.28a.75.75 0 1 1-1.06 1.06l-2.5-2.5A.75.75 0 0 1 7.25 8V4A.75.75 0 0 1 8 3.25z"/></svg>';
-  const playSvg = '<svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M3 1.713a.7.7 0 0 1 1.05-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894A.7.7 0 0 1 3 14.288V1.713z"/></svg>';
-  const noteSvg = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>';
-  const spotifySvg = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>';
-  const appleSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>';
-
-  let html = '<div class="catalog-header"><span class="cat-col-num">#</span><span class="cat-col-title">Title</span><span class="cat-col-album">Album</span><span class="cat-col-dur">' + clockSvg + '</span><span class="cat-col-links"></span></div>';
-
-  tracks.forEach((track, i) => {
-    const dur = Math.floor(track.duration_seconds / 60) + ':' + (track.duration_seconds % 60).toString().padStart(2, '0');
-    const art = track.album_art_url ? '<img src="' + track.album_art_url + '" alt="' + track.album + '" loading="lazy">' : noteSvg;
-
-    html += '<div class="catalog-track" data-track-id="' + track.id + '" data-album="' + track.album + '">'
-      + '<span class="catalog-track-num"><span class="ct-num">' + (i + 1) + '</span><span class="ct-play">' + playSvg + '</span></span>'
-      + '<div class="catalog-track-main"><div class="catalog-track-art">' + art + '</div>'
-      + '<div class="catalog-track-info"><span class="catalog-track-title">' + track.title + '</span>'
-      + '<span class="catalog-track-artist">A Boogie Wit Da Hoodie</span></div></div>'
-      + '<span class="catalog-track-album">' + track.album + '</span>'
-      + '<span class="catalog-track-duration">' + dur + '</span>'
-      + '<div class="catalog-track-links">'
-      + (track.spotify_url ? '<a href="' + track.spotify_url + '" target="_blank" class="catalog-link catalog-link-spotify" title="Spotify">' + spotifySvg + '</a>' : '')
-      + (track.apple_music_url ? '<a href="' + track.apple_music_url + '" target="_blank" class="catalog-link catalog-link-apple" title="Apple Music">' + appleSvg + '</a>' : '')
-      + '</div></div>';
-  });
-
-  el.innerHTML = html;
-}
 
 // --- Main site scripts ---
 (function() {
