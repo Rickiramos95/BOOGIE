@@ -1173,108 +1173,108 @@ a.video-card {
   opacity: 0.7;
 }
 
-/* --- New Drop Spotlight --- */
-.new-drop {
-  padding: 0 0 1rem;
+/* --- Catalog Layout: sidebar + main --- */
+.catalog {
   background: var(--bg-light);
 }
-.new-drop .container {
-  padding-top: 0;
+.catalog-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+  align-items: start;
 }
-.new-drop-card {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  background: linear-gradient(135deg, rgba(212,163,115,0.12) 0%, rgba(255,255,255,0.04) 100%);
-  border: 1px solid rgba(212,163,115,0.2);
-  border-radius: 16px;
-  padding: 1.25rem 1.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+
+/* --- New Drop Sidebar --- */
+.new-drop {
+  background: linear-gradient(135deg, rgba(212,163,115,0.08) 0%, rgba(255,255,255,0.03) 100%);
+  border: 1px solid rgba(212,163,115,0.15);
+  border-radius: 14px;
+  padding: 1.25rem;
+  position: sticky;
+  top: 100px;
 }
-.new-drop-card:hover {
-  border-color: var(--accent);
-  background: linear-gradient(135deg, rgba(212,163,115,0.18) 0%, rgba(255,255,255,0.06) 100%);
-  transform: translateY(-2px);
+.new-drop-header {
+  margin-bottom: 0.75rem;
 }
 .new-drop-badge {
-  position: absolute;
-  top: 12px;
-  right: 16px;
   font-family: var(--font-display);
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--bg);
   background: var(--accent);
-  padding: 4px 10px;
+  padding: 3px 10px;
   border-radius: 50px;
 }
-.new-drop-art {
-  width: 100px;
-  height: 100px;
+.new-drop-cover {
+  width: 100%;
+  aspect-ratio: 1;
   border-radius: 10px;
   overflow: hidden;
-  flex-shrink: 0;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  margin-bottom: 0.75rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.35);
 }
-.new-drop-art img {
+.new-drop-cover img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.new-drop-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  min-width: 0;
-}
-.new-drop-label {
-  font-family: var(--font-display);
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--accent);
-}
 .new-drop-title {
-  font-size: 1.25rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--text);
+  margin: 0 0 0.15rem;
   line-height: 1.2;
 }
-.new-drop-album {
-  font-size: 0.85rem;
+.new-drop-meta {
+  font-size: 0.72rem;
   color: var(--text-muted);
+  margin: 0 0 0.75rem;
 }
-.new-drop-play {
-  display: inline-flex;
+.new-drop-tracks {
+  display: flex;
+  flex-direction: column;
+}
+.nd-track {
+  display: grid;
+  grid-template-columns: 20px 1fr 36px;
+  gap: 0.4rem;
   align-items: center;
-  gap: 6px;
-  margin-top: 0.35rem;
-  font-size: 0.75rem;
-  font-weight: 600;
+  padding: 0.3rem 0.25rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.nd-track:hover {
+  background: rgba(255,255,255,0.06);
+}
+.nd-track-num {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.nd-track-title {
+  font-size: 0.78rem;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nd-track:hover .nd-track-title {
   color: var(--accent);
-  letter-spacing: 0.5px;
 }
-.new-drop-play svg {
-  width: 14px;
-  height: 14px;
-}
-
-@media (max-width: 480px) {
-  .new-drop-card { gap: 1rem; padding: 1rem; }
-  .new-drop-art { width: 72px; height: 72px; border-radius: 8px; }
-  .new-drop-title { font-size: 1rem; }
-  .new-drop-badge { top: 8px; right: 10px; font-size: 0.55rem; padding: 3px 8px; }
+.nd-track-dur {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
-/* --- Track Catalog (compact) --- */
-.catalog {
-  background: var(--bg-light);
+/* Catalog main column */
+.catalog-main {
+  min-width: 0;
 }
 
 .catalog-filters {
@@ -1475,30 +1475,31 @@ a.video-card {
 .catalog-link-spotify:hover { color: #1DB954; }
 .catalog-link-apple:hover { color: #fc3c44; }
 
-/* Show More button */
-.catalog-show-more {
-  background: transparent;
-  color: var(--text);
-  border: 1px solid rgba(255,255,255,0.2);
-  padding: 10px 32px;
-  border-radius: 30px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: all 0.25s ease;
+/* Scrollable track list */
+.catalog-scroll {
+  max-height: 520px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(212,163,115,0.3) transparent;
 }
-.catalog-show-more:hover {
-  background: var(--accent);
-  color: #000;
-  border-color: var(--accent);
-  transform: scale(1.03);
+.catalog-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.catalog-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.catalog-scroll::-webkit-scrollbar-thumb {
+  background: rgba(212,163,115,0.25);
+  border-radius: 3px;
+}
+.catalog-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(212,163,115,0.45);
 }
 .catalog-count {
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
-  padding-bottom: 6px;
+  padding: 8px 0 0;
   margin: 0;
 }
 
@@ -1897,10 +1898,23 @@ a.video-card {
     padding: 6px 40px 4px 6px;
   }
 
-  /* New drop tablet */
-  .new-drop-card { gap: 1.25rem; padding: 1rem 1.25rem; }
-  .new-drop-art { width: 80px; height: 80px; }
-  .new-drop-title { font-size: 1.1rem; }
+  /* Stack catalog layout on tablet */
+  .catalog-layout {
+    grid-template-columns: 1fr;
+  }
+  .new-drop {
+    position: static;
+    display: grid !important;
+    grid-template-columns: 120px 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 0 1rem;
+    padding: 1rem;
+  }
+  .new-drop-header { grid-column: 1 / -1; }
+  .new-drop-cover { width: 120px; grid-row: 2 / 4; margin-bottom: 0; }
+  .new-drop-title { font-size: 1rem; align-self: end; }
+  .new-drop-meta { align-self: start; }
+  .new-drop-tracks { grid-column: 1 / -1; margin-top: 0.5rem; }
 }
 
 @media (max-width: 480px) {
@@ -1914,7 +1928,17 @@ a.video-card {
   .catalog-track-title { font-size: 0.8rem; }
   .catalog-track-artist { font-size: 0.65rem; }
   .catalog-track-num { width: 24px; font-size: 0.75rem; }
-  .catalog-show-more { padding: 8px 24px; font-size: 0.8rem; }
+  .new-drop {
+    grid-template-columns: 90px 1fr;
+    padding: 0.75rem;
+  }
+  .new-drop-cover { width: 90px; border-radius: 8px; }
+  .new-drop-title { font-size: 0.9rem; }
+  .new-drop-meta { font-size: 0.65rem; }
+  .nd-track-title { font-size: 0.72rem; }
+  .nd-track-num { font-size: 0.65rem; }
+  .nd-track-dur { font-size: 0.62rem; }
+  .nd-track { padding: 0.2rem 0.15rem; }
 
   .playlists-grid {
     grid-template-columns: 1fr;
