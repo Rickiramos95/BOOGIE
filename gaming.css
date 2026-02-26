@@ -1329,16 +1329,22 @@ img {
   50% { opacity: 0.8; }
 }
 
-/* Scroll reveal */
+/* Scroll reveal — with fallback so content always shows */
+@keyframes gmRevealFallback {
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .gm-reveal {
   opacity: 0;
   transform: translateY(25px);
   transition: opacity 0.5s ease, transform 0.5s ease;
+  animation: gmRevealFallback 0.6s ease 1.2s forwards;
 }
 
 .gm-reveal.visible {
   opacity: 1;
   transform: translateY(0);
+  animation: none;
 }
 
 /* Toast */

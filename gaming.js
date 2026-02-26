@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const { data: sessions, error } = await supabase
         .from('gaming_sessions')
         .select('*')
-        .in('status', ['scheduled', 'live'])
+        .in('status', ['upcoming', 'scheduled', 'live'])
         .order('scheduled_at', { ascending: true })
         .limit(6);
 
@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const dateStr = date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
         const timeStr = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
         const statusClass = s.status === 'live' ? 'gm-session-status--live' : 'gm-session-status--scheduled';
-        const statusText = s.status === 'live' ? 'LIVE' : 'SCHEDULED';
+        const statusText = s.status === 'live' ? 'LIVE' : 'UPCOMING';
 
         return `
           <div class="gm-session-card">
@@ -372,7 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const { count: sessionCount } = await supabase
         .from('gaming_sessions')
         .select('*', { count: 'exact', head: true })
-        .in('status', ['scheduled', 'live']);
+        .in('status', ['upcoming', 'scheduled', 'live']);
 
       const statSquad = document.getElementById('gm-stat-squad');
       const statOnline = document.getElementById('gm-stat-online');
