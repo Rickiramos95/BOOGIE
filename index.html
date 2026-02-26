@@ -423,13 +423,18 @@
     // Load first batch
     showMoreTracks();
 
-    // Delegate click-to-play on entire list
+    // Delegate click-to-play on entire list → open sticky Spotify player
     document.getElementById('catalog-list').addEventListener('click', function(e) {
       if (e.target.closest('.catalog-track-links')) return;
       var row = e.target.closest('.catalog-track');
       if (!row) return;
       var url = row.getAttribute('data-spotify');
-      if (url) window.open(url, '_blank');
+      if (url && window.playCatalogTrack) {
+        // Highlight active track
+        document.querySelectorAll('.catalog-track.playing').forEach(function(r) { r.classList.remove('playing'); });
+        row.classList.add('playing');
+        window.playCatalogTrack(url);
+      }
     });
   }
 
@@ -461,6 +466,36 @@
     }
   }
   </script>
+  <!-- Sticky Spotify Player -->
+  <div id="spotify-player" class="spotify-player">
+    <button id="sp-close" class="sp-close" title="Close">&times;</button>
+    <div id="sp-embed" class="sp-embed"></div>
+  </div>
+
+  <script>
+  // --- Spotify Sticky Player ---
+  (function() {
+    var player = document.getElementById('spotify-player');
+    var embed = document.getElementById('sp-embed');
+    var closeBtn = document.getElementById('sp-close');
+
+    window.playCatalogTrack = function(spotifyUrl) {
+      if (!spotifyUrl) return;
+      // Extract track ID from URL like https://open.spotify.com/track/ABC123
+      var match = spotifyUrl.match(/track\/([a-zA-Z0-9]+)/);
+      if (!match) return;
+      var trackId = match[1];
+      embed.innerHTML = '<iframe src="https://open.spotify.com/embed/track/' + trackId + '?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" style="border-radius:12px;"></iframe>';
+      player.classList.add('active');
+    };
+
+    closeBtn.addEventListener('click', function() {
+      player.classList.remove('active');
+      embed.innerHTML = '';
+    });
+  })();
+  </script>
+
   <script src="script.js?v=3"></script>
 </body>
 </html>
