@@ -393,7 +393,7 @@
       var dur = Math.floor(track.duration_seconds / 60) + ':' + (track.duration_seconds % 60).toString().padStart(2, '0');
       var art = track.album_art_url ? '<img src="' + track.album_art_url + '" alt="' + track.album + '" loading="lazy">' : noteSvg;
 
-      html += '<div class="catalog-track" data-track-id="' + track.id + '" data-album="' + track.album + '">'
+      html += '<div class="catalog-track" data-track-id="' + track.id + '" data-album="' + track.album + '" data-spotify="' + (track.spotify_url || '') + '">'
         + '<span class="catalog-track-num"><span class="ct-num">' + (i + 1) + '</span><span class="ct-play">' + playSvg + '</span></span>'
         + '<div class="catalog-track-main"><div class="catalog-track-art">' + art + '</div>'
         + '<div class="catalog-track-info"><span class="catalog-track-title">' + track.title + '</span>'
@@ -407,6 +407,17 @@
     });
 
     el.innerHTML = html;
+
+    // Click track row or play icon → open on Spotify
+    el.querySelectorAll('.catalog-track').forEach(function(row) {
+      row.style.cursor = 'pointer';
+      row.addEventListener('click', function(e) {
+        // Don't hijack clicks on the Spotify/Apple links themselves
+        if (e.target.closest('.catalog-track-links')) return;
+        var url = row.getAttribute('data-spotify');
+        if (url) window.open(url, '_blank');
+      });
+    });
   }
   </script>
   <script src="script.js?v=3"></script>
