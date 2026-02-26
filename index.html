@@ -26,7 +26,7 @@
         <li><a href="#catalog">Catalog</a></li>
         <li><a href="#videos">Videos</a></li>
         <li><a href="gaming.html">Gaming</a></li>
-        <li><a href="#mailing-list">Join</a></li>
+        <li><a href="#new-drop">New Drop</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
       <div class="nav-auth">
@@ -164,6 +164,25 @@
           <a href="https://soundcloud.com/a-boogie-wit-da-hoodie" target="_blank" class="platform-link">SoundCloud</a>
           <a href="https://www.youtube.com/channel/UCfgsFOdVScKetBXYrFNr5LQ" target="_blank" class="platform-link">YouTube</a>
           <a href="https://store.warnermusic.com/collections/a-boogie-wit-da-hoodie" target="_blank" class="platform-link">Merch</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- New Drop Spotlight -->
+  <section class="section new-drop" id="new-drop">
+    <div class="container">
+      <div id="new-drop-card" class="new-drop-card" style="display:none;">
+        <span class="new-drop-badge">NEW DROP</span>
+        <div class="new-drop-art"><img id="new-drop-img" src="" alt=""></div>
+        <div class="new-drop-info">
+          <span class="new-drop-label">Latest Release</span>
+          <span class="new-drop-title" id="new-drop-title"></span>
+          <span class="new-drop-album" id="new-drop-album"></span>
+          <span class="new-drop-play">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 1.713a.7.7 0 0 1 1.05-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894A.7.7 0 0 1 3 14.288V1.713z"/></svg>
+            Play Now
+          </span>
         </div>
       </div>
     </div>
@@ -372,6 +391,29 @@
         renderCatalog(album === 'all' ? tracks : tracks.filter(function(t) { return t.album === album; }));
       });
 
+      // Populate New Drop spotlight with the newest track
+      var newest = tracks[0];
+      if (newest) {
+        var dropCard = document.getElementById('new-drop-card');
+        var dropImg = document.getElementById('new-drop-img');
+        var dropTitle = document.getElementById('new-drop-title');
+        var dropAlbum = document.getElementById('new-drop-album');
+        if (dropCard) {
+          dropTitle.textContent = newest.title;
+          dropAlbum.textContent = newest.album + ' \u00B7 ' + newest.release_year;
+          if (newest.album_art_url) {
+            dropImg.src = newest.album_art_url;
+            dropImg.alt = newest.title;
+          }
+          dropCard.style.display = '';
+          dropCard.addEventListener('click', function() {
+            if (newest.spotify_url && window.playCatalogTrack) {
+              window.playCatalogTrack(newest.spotify_url);
+            }
+          });
+        }
+      }
+
       renderCatalog(tracks);
     } catch (e) {
       var el = document.getElementById('catalog-tracks');
@@ -469,7 +511,13 @@
   <!-- Sticky Spotify Player -->
   <div id="spotify-player" class="spotify-player">
     <button id="sp-close" class="sp-close" title="Close">&times;</button>
-    <div id="sp-embed" class="sp-embed"></div>
+    <div class="sp-inner">
+      <div id="sp-embed" class="sp-embed"></div>
+      <p id="sp-login-hint" class="sp-login-hint">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#1DB954" style="vertical-align:-2px;margin-right:4px;"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+        Log into <a href="https://open.spotify.com" target="_blank" style="color:#1DB954;text-decoration:underline;">Spotify</a> in your browser to play full songs
+      </p>
+    </div>
   </div>
 
   <script>
@@ -477,21 +525,24 @@
   (function() {
     var player = document.getElementById('spotify-player');
     var embed = document.getElementById('sp-embed');
+    var hint = document.getElementById('sp-login-hint');
     var closeBtn = document.getElementById('sp-close');
 
     window.playCatalogTrack = function(spotifyUrl) {
       if (!spotifyUrl) return;
-      // Extract track ID from URL like https://open.spotify.com/track/ABC123
       var match = spotifyUrl.match(/track\/([a-zA-Z0-9]+)/);
       if (!match) return;
       var trackId = match[1];
-      embed.innerHTML = '<iframe src="https://open.spotify.com/embed/track/' + trackId + '?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" style="border-radius:12px;"></iframe>';
+      embed.innerHTML = '<iframe src="https://open.spotify.com/embed/track/' + trackId + '?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" style="border-radius:12px;"></iframe>';
       player.classList.add('active');
+      // Hide hint after first interaction
+      setTimeout(function() { hint.classList.add('fade'); }, 8000);
     };
 
     closeBtn.addEventListener('click', function() {
       player.classList.remove('active');
       embed.innerHTML = '';
+      hint.classList.remove('fade');
     });
   })();
   </script>
