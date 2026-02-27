@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>A Boogie Wit Da Hoodie</title>
-  <link rel="stylesheet" href="style.css?v=9">
+  <link rel="stylesheet" href="style.css?v=10">
   <link rel="stylesheet" href="gate.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -578,10 +578,13 @@
     apple: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>'
   };
 
+  var CATALOG_INITIAL = 15;
+
   function buildTrackRow(track, i, svgs) {
     var dur = Math.floor(track.duration_seconds / 60) + ':' + (track.duration_seconds % 60).toString().padStart(2, '0');
     var art = track.album_art_url ? '<img src="' + track.album_art_url + '" alt="' + track.album + '" loading="lazy">' : svgs.note;
-    return '<div class="catalog-track" data-track-id="' + track.id + '" data-album="' + track.album + '" data-spotify="' + (track.spotify_url || '') + '" style="cursor:pointer">'
+    var hiddenClass = i >= CATALOG_INITIAL ? ' hidden-track' : '';
+    return '<div class="catalog-track' + hiddenClass + '" data-track-id="' + track.id + '" data-album="' + track.album + '" data-spotify="' + (track.spotify_url || '') + '" style="cursor:pointer">'
       + '<span class="catalog-track-num"><span class="ct-num">' + (i + 1) + '</span><span class="ct-play">' + svgs.play + '</span></span>'
       + '<div class="catalog-track-main"><div class="catalog-track-art">' + art + '</div>'
       + '<div class="catalog-track-info"><span class="catalog-track-title">' + track.title + '</span>'
@@ -599,15 +602,31 @@
     if (!el) return;
     if (!tracks || !tracks.length) { el.innerHTML = '<p class="catalog-empty">No tracks found.</p>'; return; }
 
-    // Header + scrollable list (all tracks rendered at once)
     var html = '<div class="catalog-header"><span class="cat-col-num">#</span><span class="cat-col-title">Title</span><span class="cat-col-album">Album</span><span class="cat-col-dur">' + SVGS.clock + '</span><span class="cat-col-links"></span></div>'
       + '<div id="catalog-list" class="catalog-scroll">';
 
     for (var i = 0; i < tracks.length; i++) {
       html += buildTrackRow(tracks[i], i, SVGS);
     }
-    html += '</div><p class="catalog-count">' + tracks.length + ' tracks</p>';
+    html += '</div>';
+
+    // Show More button if there are more tracks than the initial limit
+    if (tracks.length > CATALOG_INITIAL) {
+      html += '<button class="catalog-show-more" id="catalog-show-more">Show All ' + tracks.length + ' Tracks</button>';
+    }
+
+    html += '<p class="catalog-count">' + tracks.length + ' tracks</p>';
     el.innerHTML = html;
+
+    // Show More button handler
+    var showMoreBtn = document.getElementById('catalog-show-more');
+    if (showMoreBtn) {
+      showMoreBtn.addEventListener('click', function() {
+        var list = document.getElementById('catalog-list');
+        list.classList.add('show-all');
+        showMoreBtn.style.display = 'none';
+      });
+    }
 
     // Delegate click-to-play on entire list
     document.getElementById('catalog-list').addEventListener('click', function(e) {

@@ -34,7 +34,6 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
-  scroll-snap-type: y proximity;
 }
 
 body {
@@ -176,7 +175,6 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  scroll-snap-align: start;
   text-align: center;
   background: var(--bg) url('https://beatroutemedia.com/wp-content/uploads/2022/12/A-Boogie-wit-da-Hoodie-In-Article-2.png') center top / cover no-repeat;
   overflow: hidden;
@@ -348,7 +346,6 @@ img {
 /* --- Sections --- */
 .section {
   padding: 6rem 0;
-  scroll-snap-align: start;
 }
 
 .section-title {
@@ -1288,10 +1285,6 @@ img {
 
 /* --- Responsive --- */
 @media (max-width: 768px) {
-  html {
-    scroll-snap-type: none;
-  }
-
   .reveal {
     transform: translateY(40px);
     filter: none;
@@ -2039,23 +2032,42 @@ img {
 
 /* Scrollable track list */
 .catalog-scroll {
-  max-height: 520px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(212,163,115,0.3) transparent;
+  max-height: none;
+  overflow-y: visible;
 }
-.catalog-scroll::-webkit-scrollbar {
-  width: 6px;
+
+.catalog-show-more {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1.5rem auto 0;
+  padding: 0.75rem 2.5rem;
+  background: linear-gradient(135deg, var(--accent), var(--neon-pink));
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
-.catalog-scroll::-webkit-scrollbar-track {
-  background: transparent;
+
+.catalog-show-more:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(192, 132, 252, 0.3);
 }
-.catalog-scroll::-webkit-scrollbar-thumb {
-  background: rgba(212,163,115,0.25);
-  border-radius: 3px;
+
+.catalog-track.hidden-track {
+  display: none;
 }
-.catalog-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(212,163,115,0.45);
+
+.catalog-scroll.show-all .catalog-track.hidden-track {
+  display: grid;
 }
 .catalog-count {
   text-align: center;
