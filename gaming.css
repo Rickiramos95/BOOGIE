@@ -1384,10 +1384,12 @@ img {
     padding: 2rem;
     transition: right 0.35s ease;
     z-index: 999;
+    pointer-events: none;
   }
 
   .gm-nav-links.open {
     right: 0;
+    pointer-events: auto;
   }
 
   .gm-nav-links a {

@@ -3,19 +3,19 @@
 // (Catalog loading is handled inline in index.html)
 // ============================================
 
-// --- Supabase Client (safe init — won't crash UI if CDN fails) ---
-const SUPABASE_URL = 'https://voxnxjpwzqlggsznsrdj.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZveG54anB3enFsZ2dzem5zcmRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNjQ1MDAsImV4cCI6MjA4NzY0MDUwMH0.4Ly0i0tPNw8y6GlLqeVhB-T-E8xfS164dSUEJtxUFb0';
-
-let supabase;
-try {
-  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-} catch (e) {
-  console.warn('Supabase failed to init:', e);
-}
-
 // --- Main site scripts ---
 (function() {
+  // --- Supabase Client (safe init — won't crash UI if CDN fails) ---
+  var SUPABASE_URL = 'https://voxnxjpwzqlggsznsrdj.supabase.co';
+  var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZveG54anB3enFsZ2dzem5zcmRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNjQ1MDAsImV4cCI6MjA4NzY0MDUwMH0.4Ly0i0tPNw8y6GlLqeVhB-T-E8xfS164dSUEJtxUFb0';
+
+  var sb;
+  try {
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  } catch (e) {
+    console.warn('Supabase failed to init:', e);
+  }
+
   // --- Navbar scroll effect ---
   const nav = document.getElementById('nav');
 
@@ -133,7 +133,7 @@ try {
   // =========================
 
   function signInWithSpotify() {
-    supabase.auth.signInWithOAuth({
+    sb.auth.signInWithOAuth({
       provider: 'spotify',
       options: { redirectTo: window.location.origin + window.location.pathname }
     });
@@ -159,7 +159,7 @@ try {
     currentUser = session.user;
 
     // Fetch profile
-    const { data: profile } = await supabase
+    const { data: profile } = await sb
       .from('profiles')
       .select('display_name, avatar_url')
       .eq('id', currentUser.id)
@@ -190,7 +190,7 @@ try {
 
   // Auth state listener
   try {
-  supabase.auth.onAuthStateChange((event, session) => {
+  sb.auth.onAuthStateChange((event, session) => {
     if (event === 'SIGNED_IN' && session) {
       handleSignedIn(session);
     } else if (event === 'SIGNED_OUT') {
@@ -200,7 +200,7 @@ try {
 
   // Check for existing session on load
   (async () => {
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session } } = await sb.auth.getSession();
     if (session) {
       handleSignedIn(session);
     }
@@ -219,7 +219,7 @@ try {
   });
 
   navSignoutBtn.addEventListener('click', async () => {
-    await supabase.auth.signOut();
+    await sb.auth.signOut();
     handleSignedOut();
   });
   } catch (authErr) {
@@ -233,7 +233,7 @@ try {
   async function loadUserPlaylists() {
     if (!currentUser) return;
 
-    const { data, error } = await supabase
+    const { data, error } = await sb
       .from('playlists')
       .select('*')
       .eq('user_id', currentUser.id)
@@ -294,7 +294,7 @@ try {
       btn.addEventListener('click', async (e) => {
         e.stopPropagation();
         if (!confirm('Delete this playlist?')) return;
-        const { error } = await supabase
+        const { error } = await sb
           .from('playlists')
           .delete()
           .eq('id', btn.dataset.playlistId);
@@ -346,7 +346,7 @@ try {
 
     if (existingId) {
       // Update
-      const { error } = await supabase
+      const { error } = await sb
         .from('playlists')
         .update({ name, description, updated_at: new Date().toISOString() })
         .eq('id', existingId);
@@ -357,7 +357,7 @@ try {
       }
     } else {
       // Create
-      const { error } = await supabase
+      const { error } = await sb
         .from('playlists')
         .insert([{ user_id: currentUser.id, name, description }]);
       if (error) {
@@ -385,7 +385,7 @@ try {
     document.body.style.overflow = 'hidden';
 
     // Fetch tracks in this playlist
-    const { data, error } = await supabase
+    const { data, error } = await sb
       .from('playlist_tracks')
       .select('id, position, track_id, tracks(title, album, album_art_url, duration_seconds)')
       .eq('playlist_id', playlistId)
@@ -421,7 +421,7 @@ try {
     // Remove track handlers
     playlistModalTracks.querySelectorAll('.pmt-remove').forEach(btn => {
       btn.addEventListener('click', async () => {
-        const { error } = await supabase
+        const { error } = await sb
           .from('playlist_tracks')
           .delete()
           .eq('id', btn.dataset.ptId);
@@ -495,7 +495,7 @@ try {
 
   async function addTrackToPlaylist(playlistId, trackId) {
     // Get next position
-    const { data: existing } = await supabase
+    const { data: existing } = await sb
       .from('playlist_tracks')
       .select('position')
       .eq('playlist_id', playlistId)
@@ -504,7 +504,7 @@ try {
 
     const nextPos = (existing && existing.length > 0) ? existing[0].position + 1 : 0;
 
-    const { error } = await supabase
+    const { error } = await sb
       .from('playlist_tracks')
       .insert([{ playlist_id: playlistId, track_id: trackId, position: nextPos }]);
 
